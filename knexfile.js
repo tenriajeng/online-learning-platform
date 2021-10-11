@@ -2,7 +2,7 @@ const db = require("dotenv");
 const path = require("path");
 db.config();
 
-module.exports = {
+const knexConfig = {
 	development: {
 		client: process.env.DB_CLIENT,
 		connection: {
@@ -20,3 +20,5 @@ module.exports = {
 		pool: { min: 0, max: 10 },
 	},
 };
+
+module.exports = knexConfig;
