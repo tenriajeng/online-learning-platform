@@ -15,7 +15,7 @@ router.get("/", function (req, res, next) {
 	return res.status(200).json({ message: "Ready" });
 });
 
-router.use("/user", user);
+router.use("/admin/user", user);
 router.use("/course", course);
 router.use("/category", category);
 
