@@ -4,7 +4,7 @@ exports.seed = async function (knex) {
 	// Deletes ALL existing entries
 	await knex("course").del();
 
-	for (let index = 0; index <= 200; index++) {
+	for (let index = 0; index <= 10; index++) {
 		await knex("course").insert(createCourseFaker());
 	}
 };

@@ -18,7 +18,7 @@ exports.seed = async function (knex) {
 		},
 	]);
 
-	for (let index = 3; index <= 2003; index++) {
+	for (let index = 3; index <= 10; index++) {
 		await knex("users").insert(createUserFaker(index));
 	}
 };
