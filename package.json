@@ -5,6 +5,7 @@
   "engines": {
     "node": "14.17.0"
   },
+  "license": "ISC",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app",
