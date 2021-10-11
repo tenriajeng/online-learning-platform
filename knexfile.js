@@ -3,8 +3,8 @@ const path = require("path");
 db.config();
 
 module.exports = {
+	client: process.env.DB_CLIENT,
 	development: {
-		client: process.env.DB_CLIENT,
 		connection: {
 			host: process.env.DB_HOST,
 			user: process.env.DB_USER,
