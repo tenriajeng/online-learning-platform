@@ -8,7 +8,7 @@ userList = async (req, res) => {
 
 		const paging = await paginate(req.query.page, req.query.limit, users.count);
 
-		users = await getAllUser(paging.currentPage.limit, paging.currentPage.startIndex);
+		users = await getAllUser(paging.currentPage.limit, paging.currentPage.startIndex, req.query.sort, req.query.ordinal, req.query.search);
 
 		return Response.success(res, users, paging);
 	} catch (error) {

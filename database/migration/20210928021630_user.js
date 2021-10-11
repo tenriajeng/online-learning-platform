@@ -4,7 +4,6 @@ exports.up = function (knex) {
 		table.string("username", 50).nullable();
 		table.string("email", 50).notNullable().unique();
 		table.string("password").notNullable();
-		table.string("avatar").nullable();
 		table.timestamp("created_at").defaultTo(knex.fn.now());
 		table.datetime("updated_at").nullable();
 		table.datetime("deleted_at").nullable();

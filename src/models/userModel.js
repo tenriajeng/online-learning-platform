@@ -10,8 +10,16 @@ async function findOneUser(email) {
 		.first();
 }
 
-async function getAllUser(limit, startIndex) {
-	return connection.select("id", "username", "displayName", "email", "avatar", "isActive").from("users").limit(limit).offset(startIndex);
+async function getAllUser(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
+	let query = connection.select("id", "username", "email", "created_at", "updated_at").from("users");
+
+	if (search != null) {
+		query = query.where("username", "like", `%${search}%`);
+	}
+
+	query.orderBy(sort, ordinal).limit(limit).offset(startIndex);
+
+	return query;
 }
 
 async function getNumberOfUsers() {
@@ -27,7 +35,7 @@ async function createUser(data) {
 		})
 		.from("users")
 		.then(function (id) {
-			return connection.select("id", "username", "displayName", "email", "avatar", "isActive", "created_at").from("users").where("id", id[0]);
+			return connection.select("id", "username", "email", "created_at", "updated_at").from("users").where("id", id[0]);
 		});
 }
 

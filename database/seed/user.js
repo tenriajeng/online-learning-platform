@@ -28,5 +28,4 @@ const createUserFaker = (id) => ({
 	username: faker.name.findName(),
 	email: faker.internet.email(),
 	password: "$2a$12$jqU0F.lXN2x2FZFTExLygO.ku4Pay8k3usPLTS7RF5XgTUE.h7MUC",
-	avatar: faker.image.avatar(),
 });
