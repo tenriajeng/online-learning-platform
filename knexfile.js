@@ -4,7 +4,7 @@ db.config();
 
 module.exports = {
 	development: {
-		client: "mysql",
+		client: process.env.DB_CLIENT,
 		connection: {
 			host: process.env.DB_HOST,
 			user: process.env.DB_USER,
