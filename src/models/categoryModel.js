@@ -10,7 +10,7 @@ async function findOneCategory(id) {
 		.first();
 }
 
-async function getAllCategory(limit, startIndex, sort = "created_at", ordinal, search = null) {
+async function getAllCategory(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
 	let query = connection.select("id", "title", "created_at", "updated_at").from("category");
 
 	if (search != null) {

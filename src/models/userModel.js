@@ -31,4 +31,15 @@ async function createUser(data) {
 		});
 }
 
-module.exports = { findOneUser, createUser, getAllUser, getNumberOfUsers };
+async function destroyUser(id) {
+	return connection
+		.from("users")
+		.where({
+			id: id,
+		})
+		.update({
+			deleted_at: new Date(),
+		});
+}
+
+module.exports = { findOneUser, createUser, getAllUser, getNumberOfUsers, destroyUser };

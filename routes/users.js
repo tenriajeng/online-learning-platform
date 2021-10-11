@@ -6,5 +6,6 @@ const UserController = require("../src/controller/admin/user.controller");
 
 /* GET users listing. */
 router.get("/", authMiddleware, UserController.userList);
+router.put("/destroy/:userId", authMiddleware, UserController.userDestroy);
 
 module.exports = router;

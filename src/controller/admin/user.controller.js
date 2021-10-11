@@ -1,5 +1,5 @@
 const { paginate } = require("../../helper/pagination");
-const { getNumberOfUsers, getAllUser } = require("../../models/userModel");
+const { getNumberOfUsers, getAllUser, destroyUser } = require("../../models/userModel");
 const Response = require("../../response/response");
 
 userList = async (req, res) => {
@@ -16,4 +16,14 @@ userList = async (req, res) => {
 	}
 };
 
-module.exports = { userList };
+userDestroy = async (req, res) => {
+	try {
+		users = await destroyUser(req.params.userId);
+
+		return Response.success(res, "User deleted successfully");
+	} catch (error) {
+		return res.status(400).json({ err: error.message });
+	}
+};
+
+module.exports = { userList, userDestroy };
