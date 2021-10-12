@@ -1,19 +1,29 @@
 const { paginate } = require("../../helper/pagination");
-const { getNumberOfCategory, getAllCategory } = require("../../models/categoryModel");
+const { getNumberOfCategory, getAllCategory, getPopularCategory } = require("../../models/categoryModel");
 const Response = require("../../response/response");
 
 categoryList = async (req, res) => {
 	try {
-		let category = await getNumberOfCategory();
+		let data = await getNumberOfCategory();
 
-		const paging = await paginate(req.query.page, req.query.limit, category.count);
+		const paging = await paginate(req.query.page, req.query.limit, data.count);
 
-		category = await getAllCategory(paging.currentPage.limit, paging.currentPage.startIndex, req.query.sort, req.query.ordinal, req.query.search);
+		data = await getAllCategory(paging.currentPage.limit, paging.currentPage.startIndex, req.query.sort, req.query.ordinal, req.query.search);
 
-		return Response.success(res, category, paging);
+		return Response.success(res, data, paging);
 	} catch (error) {
 		return res.status(400).json({ err: error.message });
 	}
 };
 
-module.exports = { categoryList };
+categoryPopularList = async (req, res) => {
+	try {
+		data = await getPopularCategory();
+
+		return Response.success(res, data);
+	} catch (error) {
+		return res.status(400).json({ err: error.message });
+	}
+};
+
+module.exports = { categoryList, categoryPopularList };

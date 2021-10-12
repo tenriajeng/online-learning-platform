@@ -30,4 +30,13 @@ async function createCategoryLog(categoryId, userId) {
 	return connection("category_log").insert({ user_id: userId, category_id: categoryId });
 }
 
-module.exports = { findOneCategory, getAllCategory, getNumberOfCategory, createCategoryLog };
+async function getPopularCategory() {
+	return connection("category_log")
+		.select("category.id", "category.id as category_id", "category.title as category")
+		.count("category_log.id as total_view")
+		.leftJoin("category", "category.id", "category_log.category_id")
+		.groupBy("category_log.category_id")
+		.orderBy("total_view", "DESC");
+}
+
+module.exports = { findOneCategory, getAllCategory, getNumberOfCategory, createCategoryLog, getPopularCategory };
