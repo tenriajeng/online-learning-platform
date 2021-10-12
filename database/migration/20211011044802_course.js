@@ -1,6 +1,7 @@
 exports.up = function (knex) {
 	return knex.schema.createTable("course", (table) => {
 		table.increments();
+		table.integer("category_id");
 		table.string("title");
 		table.string("slug").unique();
 		table.string("image");
