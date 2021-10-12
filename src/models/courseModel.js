@@ -6,7 +6,6 @@ async function findOneCourse(slug) {
 		.from("course")
 		.where({
 			slug: slug,
-			status: 1,
 			deleted_at: null,
 		})
 		.first();
@@ -14,7 +13,6 @@ async function findOneCourse(slug) {
 
 async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
 	let query = connection.select("id", "title", "slug", "description", "price", "status", "created_at", "updated_at").from("course").where({
-		status: 1,
 		deleted_at: null,
 	});
 
@@ -31,4 +29,31 @@ async function getNumberOfCourse() {
 	return connection("course").count("id as count").first();
 }
 
-module.exports = { findOneCourse, getAllCourse, getNumberOfCourse };
+async function createCourse(data) {
+	return connection("course")
+		.insert(data)
+		.then(function (id) {
+			return connection.select("id", "title", "slug", "image", "description", "price", "status", "created_at", "updated_at").from("course").where("id", id[0]);
+		});
+}
+
+async function updateCourse(id, data) {
+	return connection("course").where("id", id).update(data);
+}
+
+async function destroyCourse(id) {
+	return connection
+		.from("course")
+		.where({
+			id: id,
+		})
+		.update({
+			deleted_at: new Date(),
+		});
+}
+
+async function checkSlug(slug) {
+	return connection.select("id", "title", "slug", "description", "price", "status", "created_at", "updated_at").from("course").where("slug", "like", `%${slug}%`);
+}
+
+module.exports = { findOneCourse, getAllCourse, getNumberOfCourse, createCourse, updateCourse, destroyCourse, checkSlug };

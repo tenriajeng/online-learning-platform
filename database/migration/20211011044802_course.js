@@ -2,7 +2,7 @@ exports.up = function (knex) {
 	return knex.schema.createTable("course", (table) => {
 		table.increments();
 		table.string("title");
-		table.string("slug");
+		table.string("slug").unique();
 		table.string("image");
 		table.text("description");
 		table.integer("price");

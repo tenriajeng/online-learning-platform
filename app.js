@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const dotenv = require("dotenv");
+const { uploader, cloudinaryConfig } = require("./config/cloudinary");
 
 const router = require("./routes/index");
 dotenv.config();
