@@ -12,9 +12,21 @@ async function findOneCourse(slug) {
 }
 
 async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
-	let query = connection.select("id", "title", "slug", "description", "price", "status", "created_at", "updated_at").from("course").where({
-		deleted_at: null,
-	});
+	let query = connection
+		.select(
+			"course.id",
+			"category.title as category",
+			"course.title",
+			"course.slug",
+			"course.description",
+			"course.price",
+			"course.status",
+			"course.created_at",
+			"course.updated_at"
+		)
+		.from("course")
+		.where({ "course.deleted_at": null })
+		.leftJoin("category", "category.id", "course.category_id");
 
 	if (search != null) {
 		query = query.where("title", "like", `%${search}%`);
