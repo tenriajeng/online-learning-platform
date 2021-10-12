@@ -7,7 +7,29 @@ const jwt = require("jsonwebtoken");
  * @param {NextFunction} next
  * middleware for check authentication
  */
-async function authMiddleware(req, res, next) {
+async function authAdminMiddleware(req, res, next) {
+	let auth = await authMiddleware("admin", req, res);
+	if (auth) {
+		return next();
+	} else {
+		return res.status(403).json({
+			error: "not authorized",
+		});
+	}
+}
+
+async function authUserMiddleware(req, res, next) {
+	let auth = await authMiddleware("user", req, res);
+	if (auth) {
+		return next();
+	} else {
+		return res.status(403).json({
+			error: "not authorized",
+		});
+	}
+}
+
+async function authMiddleware(role, req, res) {
 	const authHeader = req.headers.authorization;
 	const token = authHeader && authHeader.split(" ")[1];
 
@@ -18,14 +40,23 @@ async function authMiddleware(req, res, next) {
 		});
 	}
 
-	return jwt.verify(token, process.env.TOKEN_SECRET, (err, _) => {
+	return jwt.verify(token, process.env.TOKEN_SECRET, (err, decode) => {
 		if (err) {
 			return res.status(403).json({
 				error: err.message,
 			});
 		}
-		return next();
+
+		let authorized = false;
+
+		decode.data.role.forEach((element) => {
+			if (element.role_name == role) {
+				authorized = true;
+			}
+		});
+
+		return authorized;
 	});
 }
 
-module.exports = authMiddleware;
+module.exports = { authAdminMiddleware, authUserMiddleware };
