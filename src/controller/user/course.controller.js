@@ -1,16 +1,21 @@
+const { getUser } = require("../../../middleware/auth");
 const { paginate } = require("../../helper/pagination");
+const { createCategoryLog } = require("../../models/categoryModel");
 const { getNumberOfCourse, getAllCourse, findOneCourse } = require("../../models/courseModel");
 const Response = require("../../response/response");
 
 courseList = async (req, res) => {
 	try {
-		let course = await getNumberOfCourse();
+		let data = await getNumberOfCourse();
+		const paging = await paginate(req.query.page, req.query.limit, data.count);
+		data = await getAllCourse(paging.currentPage.limit, paging.currentPage.startIndex, req.query.sort, req.query.ordinal, req.query.search);
+		let user = await getUser(req, res);
 
-		const paging = await paginate(req.query.page, req.query.limit, course.count);
+		await data.forEach(async (element) => {
+			await createCategoryLog(element.category_id, user.id);
+		});
 
-		course = await getAllCourse(paging.currentPage.limit, paging.currentPage.startIndex, req.query.sort, req.query.ordinal, req.query.search);
-
-		return Response.success(res, course, paging);
+		return Response.success(res, data, paging);
 	} catch (error) {
 		return res.status(400).json({ err: error.message });
 	}
@@ -18,11 +23,14 @@ courseList = async (req, res) => {
 
 courseDetail = async (req, res) => {
 	try {
-		data = await findOneCourse(req.params.slug);
+		let data = await findOneCourse(req.params.slug);
+		let user = await getUser(req, res);
+		await createCategoryLog(data.category_id, user.id);
 
 		if (!data) {
 			return res.status(404).json({ message: "data not found" });
 		}
+
 		return Response.success(res, data);
 	} catch (error) {
 		return res.status(400).json({ err: error.message });

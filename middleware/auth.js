@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
  */
 async function authAdminMiddleware(req, res, next) {
 	let auth = await authMiddleware("admin", req, res);
-	if (auth) {
+	if (auth.authorized) {
 		return next();
 	} else {
 		return res.status(403).json({
@@ -20,7 +20,7 @@ async function authAdminMiddleware(req, res, next) {
 
 async function authUserMiddleware(req, res, next) {
 	let auth = await authMiddleware("user", req, res);
-	if (auth) {
+	if (auth.authorized) {
 		return next();
 	} else {
 		return res.status(403).json({
@@ -55,8 +55,13 @@ async function authMiddleware(role, req, res) {
 			}
 		});
 
-		return authorized;
+		return (data = { authorized: authorized, user: decode.data });
 	});
 }
 
-module.exports = { authAdminMiddleware, authUserMiddleware };
+async function getUser(req, res) {
+	let auth = await authMiddleware("default", req, res);
+	return auth.user;
+}
+
+module.exports = { authAdminMiddleware, authUserMiddleware, getUser };

@@ -2,19 +2,9 @@ const connection = require("../../config/database");
 
 async function findOneCourse(slug) {
 	return connection
-		.select("id", "title", "slug", "description", "price", "status", "created_at", "updated_at")
-		.from("course")
-		.where({
-			slug: slug,
-			deleted_at: null,
-		})
-		.first();
-}
-
-async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
-	let query = connection
 		.select(
 			"course.id",
+			"category.id as category_id",
 			"category.title as category",
 			"course.title",
 			"course.slug",
@@ -25,7 +15,31 @@ async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "D
 			"course.updated_at"
 		)
 		.from("course")
-		.where({ "course.deleted_at": null })
+		.where({
+			"course.slug": slug,
+			"course.deleted_at": null,
+			"category.deleted_at": null,
+		})
+		.leftJoin("category", "category.id", "course.category_id")
+		.first();
+}
+
+async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "DESC", search = null) {
+	let query = connection
+		.select(
+			"course.id",
+			"category.id as category_id",
+			"category.title as category",
+			"course.title",
+			"course.slug",
+			"course.description",
+			"course.price",
+			"course.status",
+			"course.created_at",
+			"course.updated_at"
+		)
+		.from("course")
+		.where({ "course.deleted_at": null, "category.deleted_at": null })
 		.leftJoin("category", "category.id", "course.category_id");
 
 	if (search != null) {

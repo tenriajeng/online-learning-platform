@@ -26,4 +26,8 @@ async function getNumberOfCategory() {
 	return connection("category").count("id as count").first();
 }
 
-module.exports = { findOneCategory, getAllCategory, getNumberOfCategory };
+async function createCategoryLog(categoryId, userId) {
+	return connection("category_log").insert({ user_id: userId, category_id: categoryId });
+}
+
+module.exports = { findOneCategory, getAllCategory, getNumberOfCategory, createCategoryLog };
