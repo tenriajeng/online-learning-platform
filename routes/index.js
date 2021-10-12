@@ -8,8 +8,8 @@ const authValidation = require("../src/validation/auth/auth.validation");
 const adminUser = require("./admin/users");
 const adminCourse = require("./admin/course");
 
-const course = require("./course");
-const category = require("./category");
+const course = require("./user/course");
+const category = require("./user/category");
 
 router.post("/login", authValidation, loginController);
 router.post("/register", authValidation, registerController);
