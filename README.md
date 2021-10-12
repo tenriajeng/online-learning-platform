@@ -60,10 +60,12 @@ heroku addons:create cleardb:ignite --app HEROKU-PROJECT-NAME
 mysql://b0fbba217abab5:e0da1e09@us-cdbr-east-04.cleardb.com/heroku_a2f2621e8aa1a36?reconnect=true
 ```
 
-4. add another config vars
+### Config Vars
+
+open settings menu on your heroku project and config vars, the key is before equal sign, the value after equal sign
 
 ```sh
-DB_CLIENT="mysql2"
+DB_CLIENT=mysql2
 DB_HOST=us-cdbr-east-04.cleardb.com
 DB_USER=b0fbba217abab5
 DB_PASSWORD=e0da1e09
