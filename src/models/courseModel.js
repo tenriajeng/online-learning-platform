@@ -26,7 +26,11 @@ async function getAllCourse(limit, startIndex, sort = "created_at", ordinal = "D
 }
 
 async function getNumberOfCourse() {
-	return connection("course").count("id as count").first();
+	return connection("course").count("id as count").where({ deleted_at: null }).first();
+}
+
+async function getNumberOfFreeCourse() {
+	return connection("course").count("id as count").where({ deleted_at: null, price: 0 }).first();
 }
 
 async function createCourse(data) {
@@ -56,4 +60,4 @@ async function checkSlug(slug) {
 	return connection.select("id", "title", "slug", "description", "price", "status", "created_at", "updated_at").from("course").where("slug", "like", `%${slug}%`);
 }
 
-module.exports = { findOneCourse, getAllCourse, getNumberOfCourse, createCourse, updateCourse, destroyCourse, checkSlug };
+module.exports = { findOneCourse, getAllCourse, getNumberOfCourse, getNumberOfFreeCourse, createCourse, updateCourse, destroyCourse, checkSlug };

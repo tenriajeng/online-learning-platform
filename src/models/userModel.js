@@ -23,7 +23,7 @@ async function getAllUser(limit, startIndex, sort = "created_at", ordinal = "DES
 }
 
 async function getNumberOfUsers() {
-	return connection("users").count("id as count").first();
+	return connection("users").count("id as count").where({ deleted_at: null }).first();
 }
 
 async function createUser(data) {

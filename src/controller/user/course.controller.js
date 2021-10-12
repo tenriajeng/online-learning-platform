@@ -1,6 +1,5 @@
 const { paginate } = require("../../helper/pagination");
 const { getNumberOfCourse, getAllCourse, findOneCourse } = require("../../models/courseModel");
-const { getTeachingMaterialsByCourse } = require("../../models/teachingMaterialsModel");
 const Response = require("../../response/response");
 
 courseList = async (req, res) => {
@@ -19,15 +18,12 @@ courseList = async (req, res) => {
 
 courseDetail = async (req, res) => {
 	try {
-		course = await findOneCourse(req.params.slug);
+		data = await findOneCourse(req.params.slug);
 
-		if (!course) {
+		if (!data) {
 			return res.status(404).json({ message: "data not found" });
 		}
-
-		course.teaching_materials = await getTeachingMaterialsByCourse(course.id);
-
-		return Response.success(res, course);
+		return Response.success(res, data);
 	} catch (error) {
 		return res.status(400).json({ err: error.message });
 	}
