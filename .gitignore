@@ -1,4 +1,5 @@
 /node_modules 
+/public/Course
 .env
 .env.backup 
 npm-debug.log
